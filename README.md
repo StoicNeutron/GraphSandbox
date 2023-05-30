@@ -10,7 +10,7 @@ This is a Graph Data Structure Visualization GUI! This project offers an interac
 </ul>
 
 <h3>License</h3>
-This project is licensed under the MIT License.
+This project is licensed under the Apache License.
 
 <h3>Contact</h3>
 
