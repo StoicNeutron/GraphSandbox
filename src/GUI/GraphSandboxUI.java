@@ -1,12 +1,9 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
- */
 package GUI;
 
 import javax.swing.JPanel;
-import java.awt.Color;
+import javax.swing.JButton;
 import java.awt.Graphics;
+import java.util.*;
 
 /**
  *
@@ -1180,28 +1177,10 @@ public class GraphSandboxUI extends javax.swing.JFrame {
         return jPanel2;
     }
     
-    private void drawLine(javax.swing.JButton source, javax.swing.JButton destination) {
-
-        JPanel panel = new JPanel() {
-            @Override
-            protected void paintComponent(java.awt.Graphics g) {
-                super.paintComponent(g);
-                java.awt.Graphics2D g2d = (java.awt.Graphics2D) g;
-
-                java.awt.Point sourceLocation = source.getLocationOnScreen();
-                java.awt.Point destinationLocation = destination.getLocationOnScreen();
-
-                int x1 = sourceLocation.x + source.getWidth() / 2;
-                int y1 = sourceLocation.y + source.getHeight() / 2;
-
-                int x2 = destinationLocation.x + destination.getWidth() / 2;
-                int y2 = destinationLocation.y + destination.getHeight() / 2;
-
-                g2d.setColor(java.awt.Color.RED);
-                g2d.setStroke(new java.awt.BasicStroke(2));
-                g2d.drawLine(x1, y1, x2, y2);
-            }
-        };
+    public JButton[] getJButtons(){
+        
+        JButton[] list = {nf4, ne4, ne5, nf5, ng5, ng4, ne3, nf3, nd3, nd4, nd5, nd6, ne6, nf6, ng6, nh6, nh5, nh4, nh3, nh2, ng2, nf2, ne2, nd2};
+        return list;
     }
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
@@ -1591,41 +1570,6 @@ public class GraphSandboxUI extends javax.swing.JFrame {
         vertexID.setText("J7");
     }//GEN-LAST:event_nj7ActionPerformed
 
-    /**
-     * @param args the command line arguments
-     */
-    public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(GraphSandboxUI.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(GraphSandboxUI.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(GraphSandboxUI.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(GraphSandboxUI.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        }
-        //</editor-fold>
-
-        /* Create and display the form */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                new GraphSandboxUI().setVisible(true);
-            }
-        });
-    }
-
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.ButtonGroup buttonGroup1;
     private javax.swing.ButtonGroup buttonGroup2;
@@ -1737,4 +1681,5 @@ public class GraphSandboxUI extends javax.swing.JFrame {
     private javax.swing.JButton nj7;
     private javax.swing.JLabel vertexID;
     // End of variables declaration//GEN-END:variables
+
 }
