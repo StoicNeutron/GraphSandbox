@@ -15,9 +15,13 @@ public class Node {
     
     private JButton node;
     private LinkedList<JButton> adjacencies = new LinkedList<JButton>();
+    public int xCoordinate;
+    public int yCoordinate;
     
     public Node(JButton button){
         node = button;
+        xCoordinate = node.getX() + (node.getWidth()/2);
+        yCoordinate = node.getY() + (node.getHeight()/2);
     }
     
     // getters

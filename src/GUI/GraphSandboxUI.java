@@ -3,6 +3,7 @@ package GUI;
 import javax.swing.JPanel;
 import javax.swing.JButton;
 import java.awt.Graphics;
+import Structure.*;
 import java.util.*;
 
 /**
@@ -12,7 +13,8 @@ import java.util.*;
 public class GraphSandboxUI extends javax.swing.JFrame {
     
     // Global Variable
-    Graphics g;
+    public Graphics g;
+    public JButton[] global_list;
 
     /**
      * Creates new form GraphSandboxUI
@@ -1179,12 +1181,13 @@ public class GraphSandboxUI extends javax.swing.JFrame {
     
     public JButton[] getJButtons(){
         
-        JButton[] list = {nf4, ne4, ne5, nf5, ng5, ng4, ne3, nf3, nd3, nd4, nd5, nd6, ne6, nf6, ng6, nh6, nh5, nh4, nh3, nh2, ng2, nf2, ne2, nd2};
+        JButton[] list = {nf4, ne4, ne5, nf5, ng5, ng4, ne3, nf3, nd3, nd4, nd5, nd6, ne6, nf6, ng6, nh6, nh5, nh4, nh3, nh2, ng2, nf2, ne2, nd2, nc2, nc3, nc4, nc5, nc6, nc7, nd7, ne7, nf7, ng7, nh7, ni7, ni6, ni5, ni4, ni3, ni2, ni1, nh1, ng1, nf1, ne1, nd1, nc1, nb1, nb2, nb3, nb4, nb5, nb6, nb7, nj7, nj6, nj5, nj4, nj3, nj2, nj1, na1, na2, na3, na4, na5, na6, na7};
+        global_list = list;
         return list;
     }
-
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        // TODO add your handling code here:
+    
+    private void drawEdges(){
+        
         java.awt.Point sourceLocation = nb1.getLocationOnScreen();
         java.awt.Point destinationLocation = nc1.getLocationOnScreen();
 
@@ -1194,6 +1197,12 @@ public class GraphSandboxUI extends javax.swing.JFrame {
         int x2 = destinationLocation.x + nc1.getWidth() / 2;
         int y2 = destinationLocation.y + nc1.getHeight() / 2;
         g.drawLine(x1-5, y1, x2-5, y2);
+        g.drawLine(10, 10, 20, 20);
+    }
+
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        // TODO add your handling code here:
+        drawEdges();
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void jRadioButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jRadioButton1ActionPerformed
@@ -1210,6 +1219,7 @@ public class GraphSandboxUI extends javax.swing.JFrame {
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
         // TODO add your handling code here:
+    
     }//GEN-LAST:event_jButton2ActionPerformed
 
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed

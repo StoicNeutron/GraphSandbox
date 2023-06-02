@@ -8,15 +8,34 @@ import java.util.ArrayList;
  */
 public class Graph {
     
-    public static ArrayList<Node> graph = new ArrayList<>();
+    // ArrayList of all the nodes(JButtons)
+    public ArrayList<Node> graph;
+    public int totalNodes;
     
-    // methods
-    public static void DFS(Node startNode, Node destinationNode){
+    
+    // constructor
+    public Graph(){
+        this.graph = new ArrayList<>();
+        this.totalNodes  = 0;
+    }
+    
+    /* Methods */
+    
+    public void constructEdge(boolean complete){
+        
+        if(complete){
+            
+        }
+    }
+    
+    //Depth First Search Algorithm
+    public void DFS(Node startNode, Node destinationNode){
         
         
     }
     
-    public static void BFS(Node startNode, Node destinationNode){
+    //Breadth First Search Algorithm
+    public void BFS(Node startNode, Node destinationNode){
         
         
     }
