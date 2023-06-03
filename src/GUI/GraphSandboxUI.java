@@ -14,15 +14,32 @@ public class GraphSandboxUI extends javax.swing.JFrame {
     
     // Global Variable
     public Graphics g;
-    public JButton[] global_list;
+    public JButton[] jButton_nodeslist;
+    public Graph graphNode;
 
     /**
-     * Creates new form GraphSandboxUI
+     * Constructor
      */
     public GraphSandboxUI() {
+        
         initComponents();
+        
         g = jPanel2.getGraphics();
         jPanel2.paintComponents(g);
+        
+        JButton[] tempButtonNodeList = {nf4, ne4, ne5, nf5, ng5, ng4, ne3, nf3, nd3, nd4, nd5, nd6, ne6, nf6, ng6, nh6, nh5, nh4, nh3, nh2, ng2, nf2, ne2, nd2, nc2, nc3, nc4, nc5, nc6, nc7, nd7, ne7, nf7, ng7, nh7, ni7, ni6, ni5, ni4, ni3, ni2, ni1, nh1, ng1, nf1, ne1, nd1, nc1, nb1, nb2, nb3, nb4, nb5, nb6, nb7, nj7, nj6, nj5, nj4, nj3, nj2, nj1, na1, na2, na3, na4, na5, na6, na7};
+        this.jButton_nodeslist = tempButtonNodeList;
+        
+        graphNode = new Graph();
+        
+        // Store the Jbuttons list from GUI to the Graph structure
+        for(int i = 0; i < tempButtonNodeList.length; i++){
+            
+            Node node = new Node(tempButtonNodeList[i]);
+            graphNode.graph.add(node);
+        }
+        graphNode.totalNodes = graphNode.graph.size();
+        
         
     }
 
@@ -118,16 +135,16 @@ public class GraphSandboxUI extends javax.swing.JFrame {
         jButton1 = new javax.swing.JButton();
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
-        jTextField1 = new javax.swing.JTextField();
+        size_input = new javax.swing.JTextField();
         jLabel3 = new javax.swing.JLabel();
         jLabel4 = new javax.swing.JLabel();
-        jRadioButton1 = new javax.swing.JRadioButton();
-        jRadioButton2 = new javax.swing.JRadioButton();
+        complete_Button = new javax.swing.JRadioButton();
+        random_Button = new javax.swing.JRadioButton();
         jLabel5 = new javax.swing.JLabel();
-        jToggleButton1 = new javax.swing.JToggleButton();
+        weighted_Button = new javax.swing.JToggleButton();
         jLabel6 = new javax.swing.JLabel();
-        jToggleButton2 = new javax.swing.JToggleButton();
-        jButton2 = new javax.swing.JButton();
+        directed_Button = new javax.swing.JToggleButton();
+        construct_Button = new javax.swing.JButton();
         jLabel7 = new javax.swing.JLabel();
         jLabel8 = new javax.swing.JLabel();
         jComboBox1 = new javax.swing.JComboBox<>();
@@ -161,10 +178,8 @@ public class GraphSandboxUI extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Graph_Sandbox");
-        setMaximumSize(new java.awt.Dimension(1000, 750));
         setMinimumSize(new java.awt.Dimension(1000, 750));
         setName("mainFrame"); // NOI18N
-        setPreferredSize(new java.awt.Dimension(1000, 750));
         setResizable(false);
 
         jPanel2.setBackground(new java.awt.Color(255, 255, 255));
@@ -921,42 +936,50 @@ public class GraphSandboxUI extends javax.swing.JFrame {
 
         jLabel2.setText("Size:");
 
+        size_input.setFont(new java.awt.Font("Lucida Grande", 1, 13)); // NOI18N
+        size_input.setText("70");
+
         jLabel3.setText("(2-70)");
 
         jLabel4.setText("Connection:");
 
-        jRadioButton1.setText("Complete");
-        jRadioButton1.addActionListener(new java.awt.event.ActionListener() {
+        complete_Button.setSelected(true);
+        complete_Button.setText("Complete");
+        complete_Button.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jRadioButton1ActionPerformed(evt);
+                complete_ButtonActionPerformed(evt);
             }
         });
 
-        jRadioButton2.setText("Random");
-        jRadioButton2.addActionListener(new java.awt.event.ActionListener() {
+        random_Button.setText("Random");
+        random_Button.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jRadioButton2ActionPerformed(evt);
+                random_ButtonActionPerformed(evt);
             }
         });
 
         jLabel5.setText("Weighted:");
 
-        jToggleButton1.setSelected(true);
-        jToggleButton1.setText("False");
-        jToggleButton1.addActionListener(new java.awt.event.ActionListener() {
+        weighted_Button.setText("False");
+        weighted_Button.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jToggleButton1ActionPerformed(evt);
+                weighted_ButtonActionPerformed(evt);
             }
         });
 
         jLabel6.setText("Directed:");
 
-        jToggleButton2.setText("False");
-
-        jButton2.setText("Construct Graph");
-        jButton2.addActionListener(new java.awt.event.ActionListener() {
+        directed_Button.setText("False");
+        directed_Button.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton2ActionPerformed(evt);
+                directed_ButtonActionPerformed(evt);
+            }
+        });
+
+        construct_Button.setText("Construct Graph");
+        construct_Button.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                construct_ButtonActionPerformed(evt);
             }
         });
 
@@ -1089,25 +1112,25 @@ public class GraphSandboxUI extends javax.swing.JFrame {
                             .addGroup(jPanel1Layout.createSequentialGroup()
                                 .addComponent(jLabel5)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(jToggleButton1)
+                                .addComponent(weighted_Button)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                                 .addComponent(jLabel6)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(jToggleButton2)
+                                .addComponent(directed_Button)
                                 .addGap(31, 31, 31)
-                                .addComponent(jButton2))
+                                .addComponent(construct_Button))
                             .addGroup(jPanel1Layout.createSequentialGroup()
                                 .addComponent(jLabel2)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 69, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(size_input, javax.swing.GroupLayout.PREFERRED_SIZE, 69, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(jLabel3))
                             .addGroup(jPanel1Layout.createSequentialGroup()
                                 .addComponent(jLabel4)
                                 .addGap(18, 18, 18)
-                                .addComponent(jRadioButton1)
+                                .addComponent(complete_Button)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(jRadioButton2))
+                                .addComponent(random_Button))
                             .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addGap(0, 0, Short.MAX_VALUE))))
         );
@@ -1119,20 +1142,20 @@ public class GraphSandboxUI extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel2)
-                    .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(size_input, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel3))
                 .addGap(18, 18, 18)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel4)
-                    .addComponent(jRadioButton1)
-                    .addComponent(jRadioButton2))
+                    .addComponent(complete_Button)
+                    .addComponent(random_Button))
                 .addGap(18, 18, 18)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel5)
-                    .addComponent(jToggleButton1)
+                    .addComponent(weighted_Button)
                     .addComponent(jLabel6)
-                    .addComponent(jToggleButton2)
-                    .addComponent(jButton2))
+                    .addComponent(directed_Button)
+                    .addComponent(construct_Button))
                 .addGap(18, 18, 18)
                 .addComponent(jLabel7)
                 .addGap(18, 18, 18)
@@ -1179,25 +1202,11 @@ public class GraphSandboxUI extends javax.swing.JFrame {
         return jPanel2;
     }
     
-    public JButton[] getJButtons(){
+    public void drawEdges(){
         
-        JButton[] list = {nf4, ne4, ne5, nf5, ng5, ng4, ne3, nf3, nd3, nd4, nd5, nd6, ne6, nf6, ng6, nh6, nh5, nh4, nh3, nh2, ng2, nf2, ne2, nd2, nc2, nc3, nc4, nc5, nc6, nc7, nd7, ne7, nf7, ng7, nh7, ni7, ni6, ni5, ni4, ni3, ni2, ni1, nh1, ng1, nf1, ne1, nd1, nc1, nb1, nb2, nb3, nb4, nb5, nb6, nb7, nj7, nj6, nj5, nj4, nj3, nj2, nj1, na1, na2, na3, na4, na5, na6, na7};
-        global_list = list;
-        return list;
-    }
-    
-    private void drawEdges(){
-        
-        java.awt.Point sourceLocation = nb1.getLocationOnScreen();
-        java.awt.Point destinationLocation = nc1.getLocationOnScreen();
-
-        int x1 = sourceLocation.x + nb1.getWidth() / 2;
-        int y1 = sourceLocation.y + nb1.getHeight() / 2;
-
-        int x2 = destinationLocation.x + nc1.getWidth() / 2;
-        int y2 = destinationLocation.y + nc1.getHeight() / 2;
-        g.drawLine(x1-5, y1, x2-5, y2);
-        g.drawLine(10, 10, 20, 20);
+        for(int i = 0; i < graphNode.totalNodes; i++){
+            g.drawLine(graphNode.graph.get(i).xCoordinate, graphNode.graph.get(i).yCoordinate, graphNode.graph.get(i).xCoordinate, graphNode.graph.get(i).yCoordinate - 50);
+        }
     }
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
@@ -1205,22 +1214,37 @@ public class GraphSandboxUI extends javax.swing.JFrame {
         drawEdges();
     }//GEN-LAST:event_jButton1ActionPerformed
 
-    private void jRadioButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jRadioButton1ActionPerformed
+    private void complete_ButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_complete_ButtonActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_jRadioButton1ActionPerformed
+        if(complete_Button.isSelected()){
+            random_Button.setSelected(false);
+        }else{
+            random_Button.setSelected(true);
+        }
+    }//GEN-LAST:event_complete_ButtonActionPerformed
 
-    private void jRadioButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jRadioButton2ActionPerformed
+    private void random_ButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_random_ButtonActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_jRadioButton2ActionPerformed
+        if(random_Button.isSelected()){
+            complete_Button.setSelected(false);
+        }else{
+            complete_Button.setSelected(true);
+        }
+    }//GEN-LAST:event_random_ButtonActionPerformed
 
-    private void jToggleButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jToggleButton1ActionPerformed
+    private void weighted_ButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_weighted_ButtonActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_jToggleButton1ActionPerformed
+        if(weighted_Button.getText().equalsIgnoreCase("false")){
+            weighted_Button.setText("True");
+        }else{
+            weighted_Button.setText("False");
+        }
+    }//GEN-LAST:event_weighted_ButtonActionPerformed
 
-    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+    private void construct_ButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_construct_ButtonActionPerformed
         // TODO add your handling code here:
     
-    }//GEN-LAST:event_jButton2ActionPerformed
+    }//GEN-LAST:event_construct_ButtonActionPerformed
 
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
         // TODO add your handling code here:
@@ -1580,11 +1604,22 @@ public class GraphSandboxUI extends javax.swing.JFrame {
         vertexID.setText("J7");
     }//GEN-LAST:event_nj7ActionPerformed
 
+    private void directed_ButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_directed_ButtonActionPerformed
+        // TODO add your handling code here:
+        if(directed_Button.getText().equalsIgnoreCase("false")){
+            directed_Button.setText("True");
+        }else{
+            directed_Button.setText("False");
+        }
+    }//GEN-LAST:event_directed_ButtonActionPerformed
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.ButtonGroup buttonGroup1;
     private javax.swing.ButtonGroup buttonGroup2;
+    private javax.swing.JRadioButton complete_Button;
+    private javax.swing.JButton construct_Button;
+    private javax.swing.JToggleButton directed_Button;
     private javax.swing.JButton jButton1;
-    private javax.swing.JButton jButton2;
     private javax.swing.JButton jButton3;
     private javax.swing.JButton jButton4;
     private javax.swing.JCheckBoxMenuItem jCheckBoxMenuItem1;
@@ -1614,11 +1649,6 @@ public class GraphSandboxUI extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
-    private javax.swing.JRadioButton jRadioButton1;
-    private javax.swing.JRadioButton jRadioButton2;
-    private javax.swing.JTextField jTextField1;
-    private javax.swing.JToggleButton jToggleButton1;
-    private javax.swing.JToggleButton jToggleButton2;
     private javax.swing.JButton na1;
     private javax.swing.JButton na2;
     private javax.swing.JButton na3;
@@ -1689,7 +1719,10 @@ public class GraphSandboxUI extends javax.swing.JFrame {
     private javax.swing.JButton nj5;
     private javax.swing.JButton nj6;
     private javax.swing.JButton nj7;
+    private javax.swing.JRadioButton random_Button;
+    private javax.swing.JTextField size_input;
     private javax.swing.JLabel vertexID;
+    private javax.swing.JToggleButton weighted_Button;
     // End of variables declaration//GEN-END:variables
 
 }
