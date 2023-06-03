@@ -14,8 +14,9 @@ import javax.swing.JButton;
 public class Node {
     
     private JButton node;
-    private LinkedList<JButton> adjacencies = new LinkedList<JButton>();
+    public LinkedList<JButton> adjacencies = new LinkedList<JButton>();
     public String ID;
+    public int maxEdges;
     public int xCoordinate;
     public int yCoordinate;
     
