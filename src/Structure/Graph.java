@@ -21,17 +21,20 @@ public class Graph {
     
     /* Methods */
     
-    public void constructEdge(boolean complete){
-        
-        if(complete){
-            
-        }
-    }
-    
     //Depth First Search Algorithm
-    public void DFS(Node startNode, Node destinationNode){
+    public int DFS(Node startNode, Node destinationNode){
         
+        if(startNode.ID.equalsIgnoreCase(destinationNode.ID)){
+            return -1;
+        }
         
+        for(int i = 0; i < startNode.adjacencies.size(); i++){
+            if(startNode.adjacencies.get(i).visited == false){
+                startNode.adjacencies.get(i).visited = true;
+                return startNode.adjacencies.get(i).globalIndex;
+            }
+        }
+        return -2;
     }
     
     //Breadth First Search Algorithm

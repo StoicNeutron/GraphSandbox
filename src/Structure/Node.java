@@ -14,8 +14,10 @@ import javax.swing.JButton;
 public class Node {
     
     private JButton node;
-    public LinkedList<JButton> adjacencies = new LinkedList<JButton>();
+    public LinkedList<Node> adjacencies = new LinkedList<>();
     public String ID;
+    public boolean visited = false;
+    public int globalIndex;
     public int maxEdges;
     public int xCoordinate;
     public int yCoordinate;
@@ -36,18 +38,6 @@ public class Node {
     public JButton getJButton(){
         
         return this.node;
-    }
-    
-    public String getAdjacencyList(){
-        
-        String string = "";
-        JButton temp = adjacencies.getFirst();
-        for(int i = 0; i < adjacencies.size(); i++){
-            string = string + temp.getText() + "; ";
-            temp = adjacencies.get(i);
-        }
-        
-        return string;
     }
     
     public int getNumOfAdjacency(){

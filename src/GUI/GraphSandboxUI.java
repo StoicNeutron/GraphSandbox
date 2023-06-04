@@ -1,9 +1,7 @@
 package GUI;
 
-import javax.swing.JPanel;
-import javax.swing.JButton;
-import java.awt.Graphics;
-import java.awt.Graphics2D;
+import javax.swing.*;
+import java.awt.*;
 import Structure.*;
 import java.awt.Color;
 import java.util.*;
@@ -18,6 +16,8 @@ public class GraphSandboxUI extends javax.swing.JFrame {
     public Graphics g;
     public JButton[] jButton_nodeslist;
     public Graph graphNode;
+    public int startingNodeIndex;
+    public int endingNodeIndex;
 
     /**
      * Constructor
@@ -38,19 +38,12 @@ public class GraphSandboxUI extends javax.swing.JFrame {
         for(int i = 0; i < tempButtonNodeList.length; i++){
             
             Node node = new Node(tempButtonNodeList[i]);
+            node.globalIndex = i;
             graphNode.graph.add(node);
         }
         graphNode.totalNodes = graphNode.graph.size();
         
-        buildEdges();
-        
-        //test only print out the distance between 2 nodes
-        int x = graphNode.graph.get(0).xCoordinate - graphNode.graph.get(1).xCoordinate;
-        int y = graphNode.graph.get(0).yCoordinate - graphNode.graph.get(1).yCoordinate;
-        double dist = Math.sqrt(x*x + y*y);
-        System.out.println("The distance: "+ dist);
-        
-        
+        buildEdges(); 
     }
 
     /**
@@ -1284,7 +1277,10 @@ public class GraphSandboxUI extends javax.swing.JFrame {
                         int y = graphNode.graph.get(i).yCoordinate - graphNode.graph.get(j).yCoordinate;
                         double dist = Math.sqrt(x*x + y*y);
                         if(dist < 70){
-                            graphNode.graph.get(i).adjacencies.add(jButton_nodeslist[j]);
+                            //Node tempNode = new Node(jButton_nodeslist[j]);
+                            //tempNode.globalIndex = j;
+                            
+                            graphNode.graph.get(i).adjacencies.add(graphNode.graph.get(j));
                             
                             //drawing part
                             
@@ -1296,9 +1292,113 @@ public class GraphSandboxUI extends javax.swing.JFrame {
             }
     }
     
-    private void run(){
+    private JButton getJButton(String ID){
         
+        for(int i = 0; i < 70; i++){
+            if(jButton_nodeslist[i].getText().equalsIgnoreCase(ID)){
+                return jButton_nodeslist[i];
+            }
+        }
         
+        return null;
+    }
+    
+    private void runDFS(){
+        
+        Stack<Integer> visitedList = new Stack<>();
+        ArrayList<Integer> path = new ArrayList<>();
+        Node currentNode = graphNode.graph.get(startingNodeIndex);
+        visitedList.add(startingNodeIndex);
+        Node destNode = graphNode.graph.get(endingNodeIndex);
+        
+        // check for error
+        if(currentNode == null){
+            System.out.println("Error!, starting node not found!");
+        }
+        
+        int statusNum;
+        statusNum = graphNode.DFS(currentNode, destNode);
+        if(statusNum == -2){
+           statusNum = visitedList.pop();
+        }
+        //update current node
+        currentNode = graphNode.graph.get(statusNum);
+        visitedList.add(statusNum);
+        jButton_nodeslist[statusNum].setBackground(Color.BLUE);
+        // test sys out
+        System.out.println(currentNode.ID + "\n");
+        
+        /* ---------------------------------------------- 
+        
+        Thread thread = new Thread(() -> {
+            try {
+                while(statusNum != -1){
+
+                    statusNum = graphNode.DFS(currentNode, destNode);
+                    if(statusNum == -2){
+                        statusNum = visitedList.pop();
+                    }else if(statusNum == -1){
+                        // reach destination
+                        break;
+                    }       
+                    //update current node
+                    currentNode = graphNode.graph.get(statusNum);
+                    visitedList.add(statusNum);
+                    SwingUtilities.invokeLater(() -> jButton_nodeslist[statusNum].setBackground(Color.BLUE));
+                    Thread.sleep(1000);
+                    // test sys out
+                    System.out.println(currentNode.ID + "\n");
+            }
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        });
+
+        thread.start();
+        
+         ---------------------------------------------- */
+        
+        while(statusNum != -1){
+            
+            statusNum = graphNode.DFS(currentNode, destNode);
+            if(statusNum == -2){
+                statusNum = visitedList.pop();
+            }else if(statusNum == -1){
+                // reach destination
+                break;
+            }
+            //update current node
+            currentNode = graphNode.graph.get(statusNum);
+            visitedList.add(statusNum);
+            //jButton_nodeslist[statusNum].setBackground(Color.BLUE);
+            if(!path.contains(statusNum)){
+                path.add(statusNum);
+            }
+            // test sys out
+            System.out.println(currentNode.ID + "\n");
+        }
+        
+        /*
+        Here ------------------
+        */
+        
+        Thread thread = new Thread(() -> {
+            try {
+                for (int i = 0; i < path.size(); i++) {
+                    animate(i, path);
+                    Thread.sleep(100);
+                }
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        });
+
+        thread.start();
+
+    }
+    
+    private void animate(int index, ArrayList<Integer> path){
+        SwingUtilities.invokeLater(() -> jButton_nodeslist[path.get(index)].setBackground(Color.BLUE));
     }
     
     private void buildGraph(){
@@ -1318,17 +1418,13 @@ public class GraphSandboxUI extends javax.swing.JFrame {
     
     private void getAdjacenciesList(String NodeID){
         
-        for(int i = 0; i < graphNode.totalNodes; i++){
-            if(graphNode.graph.get(i).ID.equalsIgnoreCase(NodeID)){
-                adjacencyTxt.setText(graphNode.graph.get(i).getAdjacencyList());
-                break;
-            }
-        }
+        
     }
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         // TODO add your handling code here:
-        drawEdges();
+        runDFS();
+        
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void complete_ButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_complete_ButtonActionPerformed
@@ -1377,6 +1473,7 @@ public class GraphSandboxUI extends javax.swing.JFrame {
             for(int i = 0; i < jButton_nodeslist.length; i++){
                 if(jButton_nodeslist[i].getText().equalsIgnoreCase(startTxtBox.getText())){
                     jButton_nodeslist[i].setBackground(Color.BLUE);
+                    startingNodeIndex = i;
                 }else{
                     if(!jButton_nodeslist[i].getText().equalsIgnoreCase(endTxtBox.getText())){
                         jButton_nodeslist[i].setBackground(Color.BLACK);
@@ -1398,6 +1495,7 @@ public class GraphSandboxUI extends javax.swing.JFrame {
             for(int i = 0; i < jButton_nodeslist.length; i++){
                 if(jButton_nodeslist[i].getText().equalsIgnoreCase(endTxtBox.getText())){
                     jButton_nodeslist[i].setBackground(Color.RED);
+                    endingNodeIndex = i;
                 }else{
                     if(!jButton_nodeslist[i].getText().equalsIgnoreCase(startTxtBox.getText())){
                         jButton_nodeslist[i].setBackground(Color.BLACK);
