@@ -13,7 +13,7 @@ import java.util.*;
 public class GraphSandboxUI extends javax.swing.JFrame {
     
     // Global Variable
-    public Graphics g;
+    public Graphics2D g;
     public JButton[] jButton_nodeslist;
     public Graph graphNode;
     public int startingNodeIndex;
@@ -26,7 +26,8 @@ public class GraphSandboxUI extends javax.swing.JFrame {
         
         initComponents();
         
-        g = jPanel2.getGraphics();
+        g = (Graphics2D) jPanel2.getGraphics();
+        g.setStroke(new BasicStroke(10f));
         jPanel2.paintComponents(g);
         
         JButton[] tempButtonNodeList = {nf4, ne4, ne5, nf5, ng5, ng4, ng3, nf3, ne3, nd3, nd4, nd5, nd6, ne6, nf6, ng6, nh6, nh5, nh4, nh3, nh2, ng2, nf2, ne2, nd2, nc2, nc3, nc4, nc5, nc6, nc7, nd7, ne7, nf7, ng7, nh7, ni7, ni6, ni5, ni4, ni3, ni2, ni1, nh1, ng1, nf1, ne1, nd1, nc1, nb1, nb2, nb3, nb4, nb5, nb6, nb7, nj7, nj6, nj5, nj4, nj3, nj2, nj1, na1, na2, na3, na4, na5, na6, na7};
@@ -1263,6 +1264,7 @@ public class GraphSandboxUI extends javax.swing.JFrame {
     public void drawEdges(){
         
         for(int i = 0; i < graphNode.totalNodes; i++){
+            
             g.drawLine(graphNode.graph.get(i).xCoordinate, graphNode.graph.get(i).yCoordinate, graphNode.graph.get(i).xCoordinate, graphNode.graph.get(i).yCoordinate - 50);
         }
     }
@@ -1309,6 +1311,7 @@ public class GraphSandboxUI extends javax.swing.JFrame {
         ArrayList<Integer> path = new ArrayList<>();
         Node currentNode = graphNode.graph.get(startingNodeIndex);
         visitedList.add(startingNodeIndex);
+        path.add(startingNodeIndex);
         Node destNode = graphNode.graph.get(endingNodeIndex);
         
         // check for error
@@ -1323,8 +1326,9 @@ public class GraphSandboxUI extends javax.swing.JFrame {
         }
         //update current node
         currentNode = graphNode.graph.get(statusNum);
+        path.add(statusNum);
         visitedList.add(statusNum);
-        jButton_nodeslist[statusNum].setBackground(Color.BLUE);
+        //jButton_nodeslist[statusNum].setBackground(Color.BLUE);
         // test sys out
         System.out.println(currentNode.ID + "\n");
         
@@ -1361,16 +1365,25 @@ public class GraphSandboxUI extends javax.swing.JFrame {
         while(statusNum != -1){
             
             statusNum = graphNode.DFS(currentNode, destNode);
-            if(statusNum == -2){
+            if(statusNum == -2){ 
+                visitedList.pop();
                 statusNum = visitedList.pop();
             }else if(statusNum == -1){
                 // reach destination
                 break;
+            }else{
+                
             }
             //update current node
             currentNode = graphNode.graph.get(statusNum);
+            /*
+            if(path.contains(statusNum)){
+            break;
+               }
+            */
             visitedList.add(statusNum);
             //jButton_nodeslist[statusNum].setBackground(Color.BLUE);
+            
             if(!path.contains(statusNum)){
                 path.add(statusNum);
             }
@@ -1385,8 +1398,12 @@ public class GraphSandboxUI extends javax.swing.JFrame {
         Thread thread = new Thread(() -> {
             try {
                 for (int i = 0; i < path.size(); i++) {
+                    
+                    if(i != 0){
+                        animate2(i-1, path);
+                    }
                     animate(i, path);
-                    Thread.sleep(100);
+                    Thread.sleep(250);
                 }
             } catch (InterruptedException e) {
                 e.printStackTrace();
@@ -1394,11 +1411,36 @@ public class GraphSandboxUI extends javax.swing.JFrame {
         });
 
         thread.start();
-
     }
     
     private void animate(int index, ArrayList<Integer> path){
         SwingUtilities.invokeLater(() -> jButton_nodeslist[path.get(index)].setBackground(Color.BLUE));
+        
+        // LINE ANIMATION
+        
+        if(index != 0){
+            g.setColor(Color.red);
+            g.drawLine(graphNode.graph.get(path.get(index)).xCoordinate, graphNode.graph.get(path.get(index)).yCoordinate, graphNode.graph.get(path.get(index-1)).xCoordinate, graphNode.graph.get(path.get(index-1)).yCoordinate);
+        }
+        
+        
+    }
+    
+    private void animate3(int index, ArrayList<Integer> path){
+        SwingUtilities.invokeLater(() -> jButton_nodeslist[path.get(index)].setBackground(Color.GREEN));
+        
+        // LINE ANIMATION
+        /* 
+        if(index != 0){
+            g.setColor(Color.red);
+            g.drawLine(graphNode.graph.get(path.get(index)).xCoordinate, graphNode.graph.get(path.get(index)).yCoordinate, graphNode.graph.get(path.get(index-1)).xCoordinate, graphNode.graph.get(path.get(index-1)).yCoordinate);
+        }
+        */
+        
+    }
+    
+    private void animate2(int index, ArrayList<Integer> path){
+        SwingUtilities.invokeLater(() -> jButton_nodeslist[path.get(index)].setBackground(Color.LIGHT_GRAY));
     }
     
     private void buildGraph(){
@@ -1413,11 +1455,6 @@ public class GraphSandboxUI extends javax.swing.JFrame {
             graphNode.graph.add(node);
         }
         graphNode.totalNodes = graphNode.graph.size();
-        
-    }
-    
-    private void getAdjacenciesList(String NodeID){
-        
         
     }
 
@@ -1508,7 +1545,6 @@ public class GraphSandboxUI extends javax.swing.JFrame {
     private void na1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_na1ActionPerformed
         
         vertexID.setText("A1");
-        getAdjacenciesList("A1");
     }//GEN-LAST:event_na1ActionPerformed
 
     private void na2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_na2ActionPerformed
@@ -1629,7 +1665,6 @@ public class GraphSandboxUI extends javax.swing.JFrame {
     private void nd4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_nd4ActionPerformed
         // TODO add your handling code here:
         vertexID.setText("D4");
-        getAdjacenciesList("D4");
     }//GEN-LAST:event_nd4ActionPerformed
 
     private void nd5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_nd5ActionPerformed
@@ -1665,7 +1700,6 @@ public class GraphSandboxUI extends javax.swing.JFrame {
     private void ne4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ne4ActionPerformed
         // TODO add your handling code here:
         vertexID.setText("E4");
-        getAdjacenciesList("E4");
     }//GEN-LAST:event_ne4ActionPerformed
 
     private void ne5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ne5ActionPerformed
