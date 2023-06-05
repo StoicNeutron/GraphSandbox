@@ -2,17 +2,17 @@ package GUI;
 
 import javax.swing.*;
 import java.awt.*;
-import Structure.*;
 import java.awt.Color;
+import Structure.*;
 import java.util.*;
 
 /**
- *
+ * This class responsible for building the GUI and any functionality of every GUI components.
  * @author stoicneutron
  */
 public class GraphSandboxUI extends javax.swing.JFrame {
     
-    // Global Variable
+    // Global Variables
     public Graphics2D g;
     public JButton[] jButton_nodeslist;
     public Graph graphNode;
@@ -30,9 +30,11 @@ public class GraphSandboxUI extends javax.swing.JFrame {
         g.setStroke(new BasicStroke(10f));
         jPanel2.paintComponents(g);
         
+        // list of nodes
         JButton[] tempButtonNodeList = {nf4, ne4, ne5, nf5, ng5, ng4, ng3, nf3, ne3, nd3, nd4, nd5, nd6, ne6, nf6, ng6, nh6, nh5, nh4, nh3, nh2, ng2, nf2, ne2, nd2, nc2, nc3, nc4, nc5, nc6, nc7, nd7, ne7, nf7, ng7, nh7, ni7, ni6, ni5, ni4, ni3, ni2, ni1, nh1, ng1, nf1, ne1, nd1, nc1, nb1, nb2, nb3, nb4, nb5, nb6, nb7, nj7, nj6, nj5, nj4, nj3, nj2, nj1, na1, na2, na3, na4, na5, na6, na7};
         this.jButton_nodeslist = tempButtonNodeList;
         
+        // build graph structure
         graphNode = new Graph();
         
         // Store the Jbuttons list from GUI to the Graph structure
@@ -43,8 +45,8 @@ public class GraphSandboxUI extends javax.swing.JFrame {
             graphNode.graph.add(node);
         }
         graphNode.totalNodes = graphNode.graph.size();
-        
-        buildEdges(); 
+        // connect the graph
+        //buildEdges(false); 
     }
 
     /**
@@ -1269,9 +1271,10 @@ public class GraphSandboxUI extends javax.swing.JFrame {
         }
     }
     
-    private void buildEdges(){
+    private void buildEdges(boolean completed){
         
-        for(int i = 0; i < jButton_nodeslist.length; i++){
+        if(completed){
+            for(int i = 0; i < jButton_nodeslist.length; i++){
                 for(int j = 0; j < jButton_nodeslist.length; j++){
                     
                     if(i != j){
@@ -1292,6 +1295,36 @@ public class GraphSandboxUI extends javax.swing.JFrame {
                     } 
                 }
             }
+        }else{
+            for(int i = 0; i < jButton_nodeslist.length; i++){
+                for(int j = 0; j < jButton_nodeslist.length; j++){
+                    
+                    if(i != j){
+                        int x = graphNode.graph.get(i).xCoordinate - graphNode.graph.get(j).xCoordinate;
+                        int y = graphNode.graph.get(i).yCoordinate - graphNode.graph.get(j).yCoordinate;
+                        double dist = Math.sqrt(x*x + y*y);
+                        if(dist < 70){
+                            
+                            // Create an instance of Random class
+                            Random random = new Random();
+        
+                            // Generate a random number between 1 and 10
+                            int randomNumber = random.nextInt(10) + 1;
+                            
+                            if(randomNumber > 5){
+                                graphNode.graph.get(i).adjacencies.add(graphNode.graph.get(j));
+                            
+                                //drawing part
+                            
+                                g.drawLine(graphNode.graph.get(i).xCoordinate, graphNode.graph.get(i).yCoordinate, graphNode.graph.get(j).xCoordinate, graphNode.graph.get(j).yCoordinate);
+                        
+                            }
+                        }
+                    } 
+                }
+            }
+        }
+        
     }
     
     private JButton getJButton(String ID){
@@ -1320,6 +1353,7 @@ public class GraphSandboxUI extends javax.swing.JFrame {
         }
         
         int statusNum;
+        // DFS AND GREEDY
         statusNum = graphNode.DFS(currentNode, destNode);
         if(statusNum == -2){
            statusNum = visitedList.pop();
@@ -1366,8 +1400,14 @@ public class GraphSandboxUI extends javax.swing.JFrame {
             
             statusNum = graphNode.DFS(currentNode, destNode);
             if(statusNum == -2){ 
+                
                 visitedList.pop();
-                statusNum = visitedList.pop();
+                try{
+                    statusNum = visitedList.pop();
+                }catch(Exception e){
+                    break;
+                }
+                
             }else if(statusNum == -1){
                 // reach destination
                 break;
@@ -1412,17 +1452,17 @@ public class GraphSandboxUI extends javax.swing.JFrame {
 
         thread.start();
     }
-    
+
     private void animate(int index, ArrayList<Integer> path){
         SwingUtilities.invokeLater(() -> jButton_nodeslist[path.get(index)].setBackground(Color.BLUE));
         
         // LINE ANIMATION
-        
+        /*
         if(index != 0){
             g.setColor(Color.red);
             g.drawLine(graphNode.graph.get(path.get(index)).xCoordinate, graphNode.graph.get(path.get(index)).yCoordinate, graphNode.graph.get(path.get(index-1)).xCoordinate, graphNode.graph.get(path.get(index-1)).yCoordinate);
         }
-        
+        */
         
     }
     
@@ -1494,7 +1534,7 @@ public class GraphSandboxUI extends javax.swing.JFrame {
     private void construct_ButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_construct_ButtonActionPerformed
         // TODO add your handling code here:
         //buildGraph();
-        buildEdges();
+        buildEdges(true);
     
     }//GEN-LAST:event_construct_ButtonActionPerformed
 

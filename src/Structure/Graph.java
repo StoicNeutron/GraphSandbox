@@ -31,10 +31,46 @@ public class Graph {
         for(int i = 0; i < startNode.adjacencies.size(); i++){
             if(startNode.adjacencies.get(i).visited == false){
                 startNode.adjacencies.get(i).visited = true;
+                // add test
+                startNode.visited = true;
                 return startNode.adjacencies.get(i).globalIndex;
             }
         }
         return -2;
+    }
+    
+    //Depth First Search Algorithm + Manhatan Value
+    public int GreedyDFS(Node startNode, Node destinationNode){
+        
+        if(startNode.ID.equalsIgnoreCase(destinationNode.ID)){
+            return -1;
+        }
+        
+        double xVal = startNode.xCoordinate - destinationNode.xCoordinate;
+        double yVal = startNode.yCoordinate - destinationNode.yCoordinate;
+        double mValue = Math.sqrt(xVal*xVal + yVal*yVal);
+        int adjacentIndex = 0;
+        int index = 0;
+        for(int i = 0; i < startNode.adjacencies.size(); i++){
+            if(startNode.adjacencies.get(i).visited == false){
+                double xVal2 = startNode.adjacencies.get(i).xCoordinate - destinationNode.xCoordinate;
+                double yVal2 = startNode.adjacencies.get(i).yCoordinate - destinationNode.yCoordinate;
+                double tempVal = Math.sqrt(xVal2*xVal2 + yVal2*yVal2);
+                if(tempVal < mValue){
+                    index = startNode.adjacencies.get(i).globalIndex;
+                    adjacentIndex = i;
+                }
+               
+            }
+        }
+        if(mValue != Math.sqrt(startNode.xCoordinate * destinationNode.xCoordinate + startNode.yCoordinate * destinationNode.yCoordinate)){
+            startNode.adjacencies.get(adjacentIndex).visited = true;
+            // add test
+            startNode.visited = true;
+            return index;
+        }else{
+            return -2;
+        }
     }
     
     //Breadth First Search Algorithm
