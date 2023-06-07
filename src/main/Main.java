@@ -1,10 +1,6 @@
 package main;
 
 import GUI.GraphSandboxUI;
-import javax.swing.JButton;
-import java.awt.Graphics;
-import java.util.*;
-import Structure.*;
 
 /**
  * This is a main function of the project.
@@ -43,13 +39,5 @@ public class Main extends javax.swing.JPanel {
                 
             }
         });
-        
-        // All Backend Implementation start here:
-        
-        // All the JButtons List in it right order.
-        ArrayList<JButton> jButton_List = new ArrayList<>();
-    }
-    
-    /* All Backend methods start here: */
-    
+    }  
 }

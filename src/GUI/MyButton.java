@@ -1,30 +1,20 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package GUI;
 
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.RenderingHints;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
 import javax.swing.JButton;
 
 /**
- *
+ * This class responsible for the customize look of each node(JButton) of the graph.
  * @author stoicneutron
  */
 public class MyButton extends JButton {
-
-    public boolean isOver() {
-        return over;
-    }
-
-    public void setOver(boolean over) {
-        this.over = over;
-    }
+    
+    private Color color;
+    private Color borderColor;
+    private int radius = 90;
 
     public Color getColor() {
         return color;
@@ -33,22 +23,6 @@ public class MyButton extends JButton {
     public void setColor(Color color) {
         this.color = color;
         setBackground(color);
-    }
-
-    public Color getColorOver() {
-        return colorOver;
-    }
-
-    public void setColorOver(Color colorOver) {
-        this.colorOver = colorOver;
-    }
-
-    public Color getColorClick() {
-        return colorClick;
-    }
-
-    public void setColorClick(Color colorClick) {
-        this.colorClick = colorClick;
     }
 
     public Color getBorderColor() {
@@ -69,21 +43,9 @@ public class MyButton extends JButton {
 
     public MyButton() {
         //  Init Color
-
-        //setColor(Color.WHITE);
-        //colorOver = new Color(179, 250, 160);
-        //colorClick = new Color(152, 184, 144);
         borderColor = new Color(0, 0, 0);
         setContentAreaFilled(false);
-        
     }
-
-    private boolean over;
-    private Color color;
-    private Color colorOver;
-    private Color colorClick;
-    private Color borderColor;
-    private int radius = 90;
 
     @Override
     protected void paintComponent(Graphics grphcs) {

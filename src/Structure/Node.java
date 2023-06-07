@@ -1,19 +1,15 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package Structure;
 
 import java.util.LinkedList;
 import javax.swing.JButton;
 
 /**
- *
+ * This class represent each node of a graph structure.
  * @author stoicneutron
  */
 public class Node {
     
-    private JButton node;
+    private final JButton node;
     public LinkedList<Node> adjacencies = new LinkedList<>();
     public String ID;
     public boolean visited = false;
@@ -29,7 +25,7 @@ public class Node {
         yCoordinate = node.getY() + (node.getHeight()/2);
     }
     
-    // getters
+    // getters methods
     public String getNodeID(){
         
         return node.getText();

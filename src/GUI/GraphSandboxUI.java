@@ -16,6 +16,10 @@ public class GraphSandboxUI extends javax.swing.JFrame {
     public Graphics2D g;
     public JButton[] jButton_nodeslist;
     public Graph graphNode;
+    public boolean ranOnce = false;
+    public boolean conctructOnce = false;
+    private ArrayList<Integer> iIndexList = new ArrayList<>();
+    private ArrayList<Integer> jIndexList = new ArrayList<>();
     public int startingNodeIndex;
     public int endingNodeIndex;
 
@@ -138,7 +142,7 @@ public class GraphSandboxUI extends javax.swing.JFrame {
         nj7 = new MyButton();
         ne7 = new MyButton();
         jPanel1 = new javax.swing.JPanel();
-        jButton1 = new javax.swing.JButton();
+        runButton = new javax.swing.JButton();
         jLabel1 = new javax.swing.JLabel();
         jLabel4 = new javax.swing.JLabel();
         complete_Button = new javax.swing.JRadioButton();
@@ -150,7 +154,7 @@ public class GraphSandboxUI extends javax.swing.JFrame {
         construct_Button = new javax.swing.JButton();
         jLabel7 = new javax.swing.JLabel();
         jLabel8 = new javax.swing.JLabel();
-        jComboBox1 = new javax.swing.JComboBox<>();
+        algorithmOpt = new javax.swing.JComboBox<>();
         jLabel9 = new javax.swing.JLabel();
         startTxtBox = new javax.swing.JLabel();
         jLabel11 = new javax.swing.JLabel();
@@ -163,6 +167,10 @@ public class GraphSandboxUI extends javax.swing.JFrame {
         jLabel17 = new javax.swing.JLabel();
         adjacencyTxt = new javax.swing.JLabel();
         statusTxt = new javax.swing.JLabel();
+        speedOpt = new javax.swing.JComboBox<>();
+        jLabel2 = new javax.swing.JLabel();
+        jLabel3 = new javax.swing.JLabel();
+        jComboBox3 = new javax.swing.JComboBox<>();
 
         jCheckBoxMenuItem1.setSelected(true);
         jCheckBoxMenuItem1.setText("jCheckBoxMenuItem1");
@@ -996,10 +1004,10 @@ public class GraphSandboxUI extends javax.swing.JFrame {
         jPanel1.setBackground(new java.awt.Color(204, 209, 211));
         jPanel1.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Graph Sandbox", javax.swing.border.TitledBorder.CENTER, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Noteworthy", 1, 18))); // NOI18N
 
-        jButton1.setText("RUN");
-        jButton1.addActionListener(new java.awt.event.ActionListener() {
+        runButton.setText("RUN");
+        runButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton1ActionPerformed(evt);
+                runButtonActionPerformed(evt);
             }
         });
 
@@ -1053,7 +1061,7 @@ public class GraphSandboxUI extends javax.swing.JFrame {
 
         jLabel8.setText("Algorithm:");
 
-        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Depth First Search", "Breadth First Search" }));
+        algorithmOpt.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Depth First Search", "DFS + Manhattan Distance", "Breadth First Search" }));
 
         jLabel9.setText("Starting Node:");
 
@@ -1144,6 +1152,14 @@ public class GraphSandboxUI extends javax.swing.JFrame {
                 .addGap(21, 21, 21))
         );
 
+        speedOpt.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Fast", "Medium", "Slow" }));
+
+        jLabel2.setText("Speed:");
+
+        jLabel3.setText("Animation Style:");
+
+        jComboBox3.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Radar", "Path Line" }));
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
@@ -1154,28 +1170,19 @@ public class GraphSandboxUI extends javax.swing.JFrame {
                     .addComponent(jLabel7, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                            .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel1Layout.createSequentialGroup()
-                                .addComponent(jLabel9)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(startTxtBox)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(jLabel11))
-                            .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel1Layout.createSequentialGroup()
-                                .addComponent(jLabel8)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, 224, javax.swing.GroupLayout.PREFERRED_SIZE)))
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(endTxtBox)
-                                .addGap(0, 0, Short.MAX_VALUE))
-                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel1Layout.createSequentialGroup()
+                                        .addComponent(jLabel9)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                        .addComponent(startTxtBox))
+                                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel1Layout.createSequentialGroup()
+                                        .addComponent(jLabel8)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                        .addComponent(algorithmOpt, javax.swing.GroupLayout.PREFERRED_SIZE, 224, javax.swing.GroupLayout.PREFERRED_SIZE)))
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(jButton1)
-                                .addContainerGap())))
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                .addComponent(runButton))
                             .addGroup(jPanel1Layout.createSequentialGroup()
                                 .addComponent(jLabel4)
                                 .addGap(18, 18, 18)
@@ -1184,18 +1191,33 @@ public class GraphSandboxUI extends javax.swing.JFrame {
                                 .addComponent(random_Button)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 58, Short.MAX_VALUE)
                                 .addComponent(construct_Button))
+                            .addComponent(jPanel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel1Layout.createSequentialGroup()
-                                        .addComponent(jLabel6)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                        .addComponent(directed_Button))
-                                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel1Layout.createSequentialGroup()
-                                        .addComponent(jLabel5)
+                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                                        .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel1Layout.createSequentialGroup()
+                                            .addComponent(jLabel6)
+                                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                            .addComponent(directed_Button))
+                                        .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel1Layout.createSequentialGroup()
+                                            .addComponent(jLabel5)
+                                            .addGap(18, 18, 18)
+                                            .addComponent(weighted_Button)))
+                                    .addGroup(jPanel1Layout.createSequentialGroup()
+                                        .addComponent(jLabel2)
+                                        .addGap(32, 32, 32)
+                                        .addComponent(speedOpt, javax.swing.GroupLayout.PREFERRED_SIZE, 126, javax.swing.GroupLayout.PREFERRED_SIZE)
                                         .addGap(18, 18, 18)
-                                        .addComponent(weighted_Button)))
-                                .addGap(0, 0, Short.MAX_VALUE))
-                            .addComponent(jPanel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                                .addComponent(jLabel11)
+                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                                .addComponent(endTxtBox))
+                                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                                .addComponent(jLabel3)
+                                                .addGap(18, 18, 18)
+                                                .addComponent(jComboBox3, javax.swing.GroupLayout.PREFERRED_SIZE, 125, javax.swing.GroupLayout.PREFERRED_SIZE)))))
+                                .addGap(0, 0, Short.MAX_VALUE)))
                         .addContainerGap())))
         );
         jPanel1Layout.setVerticalGroup(
@@ -1222,15 +1244,21 @@ public class GraphSandboxUI extends javax.swing.JFrame {
                 .addGap(18, 18, 18)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel8)
-                    .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jButton1))
+                    .addComponent(algorithmOpt, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(runButton))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel9)
                     .addComponent(startTxtBox)
                     .addComponent(jLabel11)
                     .addComponent(endTxtBox))
-                .addGap(26, 26, 26)
+                .addGap(18, 18, 18)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(speedOpt, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel2)
+                    .addComponent(jLabel3)
+                    .addComponent(jComboBox3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(22, 22, 22)
                 .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
@@ -1259,19 +1287,48 @@ public class GraphSandboxUI extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    public JPanel getjPanel2() {
-        return jPanel2;
-    }
     
+    /**
+     * This method responsible for drawing the edges between each node of the graph.
+     */
     public void drawEdges(){
         
-        for(int i = 0; i < graphNode.totalNodes; i++){
-            
-            g.drawLine(graphNode.graph.get(i).xCoordinate, graphNode.graph.get(i).yCoordinate, graphNode.graph.get(i).xCoordinate, graphNode.graph.get(i).yCoordinate - 50);
+        g.setColor(Color.BLACK);
+        for(int i = 0; i < iIndexList.size(); i++){      
+            g.drawLine(graphNode.graph.get(iIndexList.get(i)).xCoordinate, graphNode.graph.get(iIndexList.get(i)).yCoordinate, graphNode.graph.get(jIndexList.get(i)).xCoordinate, graphNode.graph.get(jIndexList.get(i)).yCoordinate);
         }
     }
     
+    public void clearEdges(){
+        
+        g.setColor(Color.WHITE);
+        for(int i = 0; i < iIndexList.size(); i++){      
+            g.drawLine(graphNode.graph.get(iIndexList.get(i)).xCoordinate, graphNode.graph.get(iIndexList.get(i)).yCoordinate, graphNode.graph.get(jIndexList.get(i)).xCoordinate, graphNode.graph.get(jIndexList.get(i)).yCoordinate);
+        }
+    }
+    
+    /**
+     * This method responsible for connecting nodes together within the graph structure.
+     * @param completed either true or false.
+     */
     private void buildEdges(boolean completed){
+        
+        if(conctructOnce){
+            iIndexList.clear();
+            jIndexList.clear();
+            jPanel2.update(g);
+            
+            // reset the eages color
+            drawEdges();
+            // reset the node bg color back to black
+            for(int i = 0; i < jButton_nodeslist.length; i++){
+
+                jButton_nodeslist[i].setBackground(Color.BLACK);
+
+                // reset the visited properties back to false.
+                graphNode.graph.get(i).visited = false;
+            }
+        }
         
         if(completed){
             for(int i = 0; i < jButton_nodeslist.length; i++){
@@ -1287,8 +1344,9 @@ public class GraphSandboxUI extends javax.swing.JFrame {
                             
                             graphNode.graph.get(i).adjacencies.add(graphNode.graph.get(j));
                             
+                            iIndexList.add(i);
+                            jIndexList.add(j);
                             //drawing part
-                            
                             g.drawLine(graphNode.graph.get(i).xCoordinate, graphNode.graph.get(i).yCoordinate, graphNode.graph.get(j).xCoordinate, graphNode.graph.get(j).yCoordinate);
                         
                         }
@@ -1304,41 +1362,31 @@ public class GraphSandboxUI extends javax.swing.JFrame {
                         int y = graphNode.graph.get(i).yCoordinate - graphNode.graph.get(j).yCoordinate;
                         double dist = Math.sqrt(x*x + y*y);
                         if(dist < 70){
-                            
                             // Create an instance of Random class
                             Random random = new Random();
-        
                             // Generate a random number between 1 and 10
                             int randomNumber = random.nextInt(10) + 1;
                             
                             if(randomNumber > 5){
                                 graphNode.graph.get(i).adjacencies.add(graphNode.graph.get(j));
+                                graphNode.graph.get(j).adjacencies.add(graphNode.graph.get(i));
                             
-                                //drawing part
-                            
+                                iIndexList.add(i);
+                                jIndexList.add(j);
+                                //drawing part    
                                 g.drawLine(graphNode.graph.get(i).xCoordinate, graphNode.graph.get(i).yCoordinate, graphNode.graph.get(j).xCoordinate, graphNode.graph.get(j).yCoordinate);
-                        
                             }
                         }
                     } 
                 }
             }
-        }
-        
+        }     
     }
     
-    private JButton getJButton(String ID){
-        
-        for(int i = 0; i < 70; i++){
-            if(jButton_nodeslist[i].getText().equalsIgnoreCase(ID)){
-                return jButton_nodeslist[i];
-            }
-        }
-        
-        return null;
-    }
-    
-    private void runDFS(){
+    /**
+     * This is a Depth First Search Algorithm, this method will find the destination node while also responsible for the animation.
+     */
+    private void runDFS(int speed, boolean manhattan){
         
         Stack<Integer> visitedList = new Stack<>();
         ArrayList<Integer> path = new ArrayList<>();
@@ -1354,7 +1402,11 @@ public class GraphSandboxUI extends javax.swing.JFrame {
         
         int statusNum;
         // DFS AND GREEDY
-        statusNum = graphNode.DFS(currentNode, destNode);
+        if(manhattan){
+            statusNum = graphNode.lowKeyGreedyDFS(currentNode, destNode);
+        }else{
+            statusNum = graphNode.DFS(currentNode, destNode);
+        }
         if(statusNum == -2){
            statusNum = visitedList.pop();
         }
@@ -1362,79 +1414,38 @@ public class GraphSandboxUI extends javax.swing.JFrame {
         currentNode = graphNode.graph.get(statusNum);
         path.add(statusNum);
         visitedList.add(statusNum);
-        //jButton_nodeslist[statusNum].setBackground(Color.BLUE);
-        // test sys out
-        System.out.println(currentNode.ID + "\n");
-        
-        /* ---------------------------------------------- 
-        
-        Thread thread = new Thread(() -> {
-            try {
-                while(statusNum != -1){
-
-                    statusNum = graphNode.DFS(currentNode, destNode);
-                    if(statusNum == -2){
-                        statusNum = visitedList.pop();
-                    }else if(statusNum == -1){
-                        // reach destination
-                        break;
-                    }       
-                    //update current node
-                    currentNode = graphNode.graph.get(statusNum);
-                    visitedList.add(statusNum);
-                    SwingUtilities.invokeLater(() -> jButton_nodeslist[statusNum].setBackground(Color.BLUE));
-                    Thread.sleep(1000);
-                    // test sys out
-                    System.out.println(currentNode.ID + "\n");
-            }
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-        });
-
-        thread.start();
-        
-         ---------------------------------------------- */
         
         while(statusNum != -1){
             
-            statusNum = graphNode.DFS(currentNode, destNode);
+            if(manhattan){
+                statusNum = graphNode.lowKeyGreedyDFS(currentNode, destNode);
+            }else{
+                statusNum = graphNode.DFS(currentNode, destNode);
+            }
             if(statusNum == -2){ 
                 
-                visitedList.pop();
+                // add path add test
+                path.add(visitedList.pop());
                 try{
                     statusNum = visitedList.pop();
+                    path.add(statusNum);
                 }catch(Exception e){
                     break;
-                }
-                
+                }   
             }else if(statusNum == -1){
+                
                 // reach destination
                 break;
-            }else{
-                
             }
             //update current node
             currentNode = graphNode.graph.get(statusNum);
-            /*
-            if(path.contains(statusNum)){
-            break;
-               }
-            */
             visitedList.add(statusNum);
-            //jButton_nodeslist[statusNum].setBackground(Color.BLUE);
             
             if(!path.contains(statusNum)){
                 path.add(statusNum);
             }
-            // test sys out
-            System.out.println(currentNode.ID + "\n");
         }
-        
-        /*
-        Here ------------------
-        */
-        
+        // run animation
         Thread thread = new Thread(() -> {
             try {
                 for (int i = 0; i < path.size(); i++) {
@@ -1443,27 +1454,31 @@ public class GraphSandboxUI extends javax.swing.JFrame {
                         animate2(i-1, path);
                     }
                     animate(i, path);
-                    Thread.sleep(250);
+                    Thread.sleep(speed);
                 }
+                runButton.setEnabled(true);
+                construct_Button.setEnabled(true);
             } catch (InterruptedException e) {
-                e.printStackTrace();
+                System.out.println(e);
             }
         });
 
         thread.start();
     }
 
+    /**
+     * Helper function for animation purposes.
+     * @param index of the node.
+     * @param path list of the nodes.
+     */
     private void animate(int index, ArrayList<Integer> path){
-        SwingUtilities.invokeLater(() -> jButton_nodeslist[path.get(index)].setBackground(Color.BLUE));
+        SwingUtilities.invokeLater(() -> jButton_nodeslist[path.get(index)].setBackground(Color.GREEN));
         
         // LINE ANIMATION
-        /*
         if(index != 0){
-            g.setColor(Color.red);
+            g.setColor(Color.BLUE);
             g.drawLine(graphNode.graph.get(path.get(index)).xCoordinate, graphNode.graph.get(path.get(index)).yCoordinate, graphNode.graph.get(path.get(index-1)).xCoordinate, graphNode.graph.get(path.get(index-1)).yCoordinate);
         }
-        */
-        
     }
     
     private void animate3(int index, ArrayList<Integer> path){
@@ -1479,8 +1494,9 @@ public class GraphSandboxUI extends javax.swing.JFrame {
         
     }
     
+    
     private void animate2(int index, ArrayList<Integer> path){
-        SwingUtilities.invokeLater(() -> jButton_nodeslist[path.get(index)].setBackground(Color.LIGHT_GRAY));
+        SwingUtilities.invokeLater(() -> jButton_nodeslist[path.get(index)].setBackground(Color.BLUE));
     }
     
     private void buildGraph(){
@@ -1498,11 +1514,54 @@ public class GraphSandboxUI extends javax.swing.JFrame {
         
     }
 
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        // TODO add your handling code here:
-        runDFS();
+    private void runButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_runButtonActionPerformed
         
-    }//GEN-LAST:event_jButton1ActionPerformed
+        if(ranOnce){
+            
+            // reset the eages color
+            drawEdges();
+            // reset the node bg color back to black
+            for(int i = 0; i < jButton_nodeslist.length; i++){
+                
+                if(i == startingNodeIndex){
+                    jButton_nodeslist[i].setBackground(Color.BLUE);
+                }else if(i == endingNodeIndex){
+                    jButton_nodeslist[i].setBackground(Color.RED);
+                }else{
+                    jButton_nodeslist[i].setBackground(Color.BLACK);
+                }
+                
+                // reset the visited properties back to false.
+                graphNode.graph.get(i).visited = false;
+            }
+            
+            //ranOnce = false;
+        }else{
+            
+            ranOnce = true;
+        }
+        int speed = 100;
+        if(speedOpt.getSelectedIndex() == 1){
+            speed = 250;
+        }else if(speedOpt.getSelectedIndex() == 2){
+            speed = 500;
+        }
+        
+        runButton.setEnabled(false);
+        construct_Button.setEnabled(false);
+        switch(algorithmOpt.getSelectedIndex()){
+            
+            case 0:
+                runDFS(speed, false);
+                break;
+            case 1:
+                runDFS(speed, true);
+                break;
+            case 2:
+                
+                break;
+        }
+    }//GEN-LAST:event_runButtonActionPerformed
 
     private void complete_ButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_complete_ButtonActionPerformed
         // TODO add your handling code here:
@@ -1531,15 +1590,34 @@ public class GraphSandboxUI extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_weighted_ButtonActionPerformed
 
-    private void construct_ButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_construct_ButtonActionPerformed
-        // TODO add your handling code here:
-        //buildGraph();
-        buildEdges(true);
     
+    private void construct_ButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_construct_ButtonActionPerformed
+     
+        // reset the ajacency list
+        if(conctructOnce){
+            for(int i = 0; i < graphNode.graph.size(); i++){
+                graphNode.graph.get(i).adjacencies.clear();
+            }
+        }
+        
+        if(complete_Button.isSelected()){
+            //complete graph
+            buildEdges(true);
+        }else{
+            //random graph (Incomplete)
+            buildEdges(false);
+        }
+        //jPanel2.paintComponents(g);
+        //drawEdges();
+        if(conctructOnce){
+        }else{
+            conctructOnce = true;
+        }
     }//GEN-LAST:event_construct_ButtonActionPerformed
 
     private void setAsStartNodeButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_setAsStartNodeButtonActionPerformed
         
+        drawEdges();
         if(endTxtBox.getText().equalsIgnoreCase(vertexID.getText())){
             statusTxt.setText("Status: Start and End Nodes can not be the same!");
             statusTxt.setForeground(Color.red);
@@ -1549,11 +1627,14 @@ public class GraphSandboxUI extends javax.swing.JFrame {
             statusTxt.setForeground(Color.BLACK);
             for(int i = 0; i < jButton_nodeslist.length; i++){
                 if(jButton_nodeslist[i].getText().equalsIgnoreCase(startTxtBox.getText())){
-                    jButton_nodeslist[i].setBackground(Color.BLUE);
+                    jButton_nodeslist[i].setBackground(Color.blue);
                     startingNodeIndex = i;
                 }else{
                     if(!jButton_nodeslist[i].getText().equalsIgnoreCase(endTxtBox.getText())){
                         jButton_nodeslist[i].setBackground(Color.BLACK);
+                    }else{
+                        // paint the end node to red to ensure
+                        jButton_nodeslist[i].setBackground(Color.red);
                     }
                 }
             }
@@ -1562,6 +1643,7 @@ public class GraphSandboxUI extends javax.swing.JFrame {
 
     private void setAsEndNodeButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_setAsEndNodeButtonActionPerformed
         
+        drawEdges();
         if(startTxtBox.getText().equalsIgnoreCase(vertexID.getText())){
             statusTxt.setText("Status: Start and End Nodes can not be the same!");
             statusTxt.setForeground(Color.red);
@@ -1571,11 +1653,14 @@ public class GraphSandboxUI extends javax.swing.JFrame {
             statusTxt.setForeground(Color.BLACK);
             for(int i = 0; i < jButton_nodeslist.length; i++){
                 if(jButton_nodeslist[i].getText().equalsIgnoreCase(endTxtBox.getText())){
-                    jButton_nodeslist[i].setBackground(Color.RED);
+                    jButton_nodeslist[i].setBackground(Color.red);
                     endingNodeIndex = i;
                 }else{
                     if(!jButton_nodeslist[i].getText().equalsIgnoreCase(startTxtBox.getText())){
                         jButton_nodeslist[i].setBackground(Color.BLACK);
+                    }else{
+                        // paint the start node to blue to ensure
+                        jButton_nodeslist[i].setBackground(Color.blue);
                     }
                 }
             }
@@ -1947,20 +2032,22 @@ public class GraphSandboxUI extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel adjacencyTxt;
+    private javax.swing.JComboBox<String> algorithmOpt;
     private javax.swing.ButtonGroup buttonGroup1;
     private javax.swing.ButtonGroup buttonGroup2;
     private javax.swing.JRadioButton complete_Button;
     private javax.swing.JButton construct_Button;
     private javax.swing.JToggleButton directed_Button;
     private javax.swing.JLabel endTxtBox;
-    private javax.swing.JButton jButton1;
     private javax.swing.JCheckBoxMenuItem jCheckBoxMenuItem1;
     private javax.swing.JCheckBoxMenuItem jCheckBoxMenuItem2;
-    private javax.swing.JComboBox<String> jComboBox1;
+    private javax.swing.JComboBox<String> jComboBox3;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel11;
     private javax.swing.JLabel jLabel13;
     private javax.swing.JLabel jLabel17;
+    private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
@@ -2045,8 +2132,10 @@ public class GraphSandboxUI extends javax.swing.JFrame {
     private javax.swing.JButton nj6;
     private javax.swing.JButton nj7;
     private javax.swing.JRadioButton random_Button;
+    private javax.swing.JButton runButton;
     private javax.swing.JButton setAsEndNodeButton;
     private javax.swing.JButton setAsStartNodeButton;
+    private javax.swing.JComboBox<String> speedOpt;
     private javax.swing.JLabel startTxtBox;
     private javax.swing.JLabel statusTxt;
     private javax.swing.JLabel vertexID;
