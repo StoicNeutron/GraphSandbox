@@ -1,14 +1,12 @@
 package main;
 
 import GUI.GraphSandboxUI;
-import javax.swing.JButton;
-import java.util.*;
 
 /**
- *
+ * This is a main function of the project.
  * @author stoicneutron
  */
-public class Main {
+public class Main extends javax.swing.JPanel {
     
     public static void main(String args[]) {
         
@@ -41,14 +39,5 @@ public class Main {
                 
             }
         });
-        
-        // All Backend Implementation start here:
-        
-        // All the JButtons List in it right order.
-        ArrayList<JButton> jButton_List = new ArrayList<>();
-        
-    }
-    
-    // All Backend methods start here:
-     
+    }  
 }
