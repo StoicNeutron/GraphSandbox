@@ -18,8 +18,8 @@ public class GraphSandboxUI extends javax.swing.JFrame {
     public Graph graphNode;
     public boolean ranOnce = false;
     public boolean conctructOnce = false;
-    private ArrayList<Integer> iIndexList = new ArrayList<>();
-    private ArrayList<Integer> jIndexList = new ArrayList<>();
+    private final ArrayList<Integer> iIndexList = new ArrayList<>();
+    private final ArrayList<Integer> jIndexList = new ArrayList<>();
     public int startingNodeIndex;
     public int endingNodeIndex;
 
@@ -49,8 +49,6 @@ public class GraphSandboxUI extends javax.swing.JFrame {
             graphNode.graph.add(node);
         }
         graphNode.totalNodes = graphNode.graph.size();
-        // connect the graph
-        //buildEdges(false); 
     }
 
     /**
@@ -1292,6 +1290,9 @@ public class GraphSandboxUI extends javax.swing.JFrame {
         }
     }
     
+    /**
+     * This method responsible for painting the existing edges to white.
+     */
     public void clearEdges(){
         
         g.setColor(Color.WHITE);
@@ -1472,41 +1473,22 @@ public class GraphSandboxUI extends javax.swing.JFrame {
             g.setColor(Color.BLUE);
             g.drawLine(graphNode.graph.get(path.get(index)).xCoordinate, graphNode.graph.get(path.get(index)).yCoordinate, graphNode.graph.get(path.get(index-1)).xCoordinate, graphNode.graph.get(path.get(index-1)).yCoordinate);
         }
-    }
+    }  
     
-    private void animate3(int index, ArrayList<Integer> path){
-        SwingUtilities.invokeLater(() -> jButton_nodeslist[path.get(index)].setBackground(Color.GREEN));
-        
-        // LINE ANIMATION
-        /* 
-        if(index != 0){
-            g.setColor(Color.red);
-            g.drawLine(graphNode.graph.get(path.get(index)).xCoordinate, graphNode.graph.get(path.get(index)).yCoordinate, graphNode.graph.get(path.get(index-1)).xCoordinate, graphNode.graph.get(path.get(index-1)).yCoordinate);
-        }
-        */
-        
-    }
-    
-    
+    /**
+     * Helper function for animation purposes.
+     * @param index of the node.
+     * @param path list of the nodes.
+     */
     private void animate2(int index, ArrayList<Integer> path){
+        
         SwingUtilities.invokeLater(() -> jButton_nodeslist[path.get(index)].setBackground(Color.BLUE));
     }
-    
-    private void buildGraph(){
-        
-        // Nodes & JButtons
-        graphNode = new Graph();
 
-        for(int i = 0; i < jButton_nodeslist.length; i++){
-            
-            jButton_nodeslist[i].setVisible(true);
-            Node node = new Node(jButton_nodeslist[i]);
-            graphNode.graph.add(node);
-        }
-        graphNode.totalNodes = graphNode.graph.size();
-        
-    }
-
+    /**
+     * This method responsible for the action when the run button is click.
+     * @param evt click listener.
+     */
     private void runButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_runButtonActionPerformed
         
         if(ranOnce){
@@ -1523,16 +1505,14 @@ public class GraphSandboxUI extends javax.swing.JFrame {
                 }else{
                     jButton_nodeslist[i].setBackground(Color.BLACK);
                 }
-                
                 // reset the visited properties back to false.
                 graphNode.graph.get(i).visited = false;
             }
-            
-            //ranOnce = false;
         }else{
             
             ranOnce = true;
         }
+        
         int speed = 100;
         if(speedOpt.getSelectedIndex() == 1){
             speed = 250;
@@ -1542,6 +1522,7 @@ public class GraphSandboxUI extends javax.swing.JFrame {
         
         runButton.setEnabled(false);
         construct_Button.setEnabled(false);
+        
         switch(algorithmOpt.getSelectedIndex()){
             
             case 0:
@@ -1556,8 +1537,12 @@ public class GraphSandboxUI extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_runButtonActionPerformed
 
+    /**
+     * This method responsible for the action when complete option button is click.
+     * @param evt click listener.
+     */
     private void complete_ButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_complete_ButtonActionPerformed
-        // TODO add your handling code here:
+        
         if(complete_Button.isSelected()){
             random_Button.setSelected(false);
         }else{
@@ -1565,8 +1550,12 @@ public class GraphSandboxUI extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_complete_ButtonActionPerformed
 
+    /**
+     * This method responsible for the action when random option button is click.
+     * @param evt click listener.
+     */
     private void random_ButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_random_ButtonActionPerformed
-        // TODO add your handling code here:
+        
         if(random_Button.isSelected()){
             complete_Button.setSelected(false);
         }else{
@@ -1574,8 +1563,12 @@ public class GraphSandboxUI extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_random_ButtonActionPerformed
 
+    /**
+     * This method responsible for the action when weighted button is click.
+     * @param evt click listener.
+     */
     private void weighted_ButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_weighted_ButtonActionPerformed
-        // TODO add your handling code here:
+        
         if(weighted_Button.getText().equalsIgnoreCase("false")){
             weighted_Button.setText("True");
         }else{
@@ -1583,9 +1576,12 @@ public class GraphSandboxUI extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_weighted_ButtonActionPerformed
 
-    
+    /**
+     * This method responsible for the action when construct button is click.
+     * @param evt listen
+     */
     private void construct_ButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_construct_ButtonActionPerformed
-     
+    
         // reset the ajacency list
         if(conctructOnce){
             for(int i = 0; i < graphNode.graph.size(); i++){
