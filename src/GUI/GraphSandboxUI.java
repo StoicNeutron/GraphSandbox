@@ -168,6 +168,7 @@ public class GraphSandboxUI extends javax.swing.JFrame {
         speedOpt = new javax.swing.JComboBox<>();
         jLabel2 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
+        jLabel10 = new javax.swing.JLabel();
 
         jCheckBoxMenuItem1.setSelected(true);
         jCheckBoxMenuItem1.setText("jCheckBoxMenuItem1");
@@ -1058,7 +1059,7 @@ public class GraphSandboxUI extends javax.swing.JFrame {
 
         jLabel8.setText("Algorithm:");
 
-        algorithmOpt.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Depth First Search", "DFS + Manhattan Distance", "Breadth First Search" }));
+        algorithmOpt.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Depth First Search", "DFS + Manhattan Distance" }));
 
         jLabel9.setText("Starting Node:");
 
@@ -1189,15 +1190,18 @@ public class GraphSandboxUI extends javax.swing.JFrame {
                             .addComponent(jPanel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addGroup(jPanel1Layout.createSequentialGroup()
                                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                                        .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel1Layout.createSequentialGroup()
-                                            .addComponent(jLabel6)
-                                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                            .addComponent(directed_Button))
-                                        .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel1Layout.createSequentialGroup()
-                                            .addComponent(jLabel5)
-                                            .addGap(18, 18, 18)
-                                            .addComponent(weighted_Button)))
+                                    .addGroup(jPanel1Layout.createSequentialGroup()
+                                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                                            .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel1Layout.createSequentialGroup()
+                                                .addComponent(jLabel6)
+                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                                .addComponent(directed_Button))
+                                            .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel1Layout.createSequentialGroup()
+                                                .addComponent(jLabel5)
+                                                .addGap(18, 18, 18)
+                                                .addComponent(weighted_Button)))
+                                        .addGap(93, 93, 93)
+                                        .addComponent(jLabel10))
                                     .addGroup(jPanel1Layout.createSequentialGroup()
                                         .addComponent(jLabel2)
                                         .addGap(32, 32, 32)
@@ -1226,7 +1230,8 @@ public class GraphSandboxUI extends javax.swing.JFrame {
                 .addGap(18, 18, 18)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel6)
-                    .addComponent(directed_Button))
+                    .addComponent(directed_Button)
+                    .addComponent(jLabel10))
                 .addGap(13, 13, 13)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel5)
@@ -1525,15 +1530,11 @@ public class GraphSandboxUI extends javax.swing.JFrame {
         
         switch(algorithmOpt.getSelectedIndex()){
             
-            case 0:
-                runDFS(speed, false);
-                break;
-            case 1:
-                runDFS(speed, true);
-                break;
-            case 2:
-                
-                break;
+            case 0 -> runDFS(speed, false);
+            case 1 -> runDFS(speed, true);
+            // TO DO LATER FOR OTHER ALGORITHMS
+            case 2 -> {
+            }
         }
     }//GEN-LAST:event_runButtonActionPerformed
 
@@ -2031,6 +2032,7 @@ public class GraphSandboxUI extends javax.swing.JFrame {
     private javax.swing.JCheckBoxMenuItem jCheckBoxMenuItem1;
     private javax.swing.JCheckBoxMenuItem jCheckBoxMenuItem2;
     private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
     private javax.swing.JLabel jLabel13;
     private javax.swing.JLabel jLabel17;

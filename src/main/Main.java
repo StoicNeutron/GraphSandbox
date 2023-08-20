@@ -3,7 +3,7 @@ package main;
 import GUI.GraphSandboxUI;
 
 /**
- * This is a main function of the project.
+ * This is a main class of the project.
  * @author stoicneutron
  */
 public class Main extends javax.swing.JPanel {
@@ -18,26 +18,15 @@ public class Main extends javax.swing.JPanel {
                     break;
                 }
             }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(GraphSandboxUI.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(GraphSandboxUI.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(GraphSandboxUI.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
+        } catch (ClassNotFoundException | InstantiationException | IllegalAccessException | javax.swing.UnsupportedLookAndFeelException ex) {
             java.util.logging.Logger.getLogger(GraphSandboxUI.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
 
         GraphSandboxUI UI = new GraphSandboxUI();
         
         /* DO NOT CHANGE! - Create and display the GUI */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-           
-            @Override
-            public void run() {
-                UI.setVisible(true);
-                
-            }
+        java.awt.EventQueue.invokeLater(() -> {
+            UI.setVisible(true);
         });
     }  
 }
