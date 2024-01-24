@@ -1,5 +1,7 @@
 <h1>Graph SandBox</h1>
 
+<h3>Note: Currently under chaging decision. Will move the project (PC GUI Application to a website application using React). The below is still apply!</h3>
+
 This is a Graph Data Structure Visualization Desktop GUI! This project offers an interactive platform where you can explore and manipulate graph structures with ease. By utilizing this GUI, you gain the understanding of various operations on graphs, including traversing, finding specific nodes, and generating a minimum spanning tree.
 
 <h3>Access this product</h3>
